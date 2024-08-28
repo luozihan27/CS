@@ -1,0 +1,39 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/DMux4Way.hdl
+
+/**
+ * 4-way demultiplexor:
+ * {a, b, c, d} = {in, 0, 0, 0} if sel == 00
+ *                {0, in, 0, 0} if sel == 01
+ *                {0, 0, in, 0} if sel == 10
+ *                {0, 0, 0, in} if sel == 11
+ */
+
+CHIP DMux4Way {
+    IN in, sel[2];
+    OUT a, b, c, d;
+
+    PARTS:
+    // Put your code here:
+    // 生成 sel[1] 和 sel[0] 的反转信号
+    Not (in=sel[1], out=notSel1);
+    Not (in=sel[0], out=notSel0);
+
+    // 选择输出 a
+    And (a=in, b=notSel1, out=inAndNotSel1);
+    And (a=inAndNotSel1, b=notSel0, out=a);
+
+    // 选择输出 b
+    And (a=in, b=notSel1, out=inAndNotSel1ForB);  // 使用不同的中间信号
+    And (a=inAndNotSel1ForB, b=sel[0], out=b);
+
+    // 选择输出 c
+    And (a=in, b=sel[1], out=inAndSel1);
+    And (a=inAndSel1, b=notSel0, out=c);
+
+    // 选择输出 d
+    And (a=in, b=sel[1], out=inAndSel1ForD);  // 使用不同的中间信号
+    And (a=inAndSel1ForD, b=sel[0], out=d);
+}

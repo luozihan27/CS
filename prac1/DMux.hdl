@@ -1,0 +1,26 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/DMux.hdl
+
+/**
+ * Demultiplexor:
+ * {a, b} = {in, 0} if sel == 0
+ *          {0, in} if sel == 1
+ */
+
+CHIP DMux {
+    IN in, sel;
+    OUT a, b;
+
+    PARTS:
+    // Put your code here:
+    // 使用 Not 门生成 sel 的反转信号 notSel
+    Not (in=sel, out=notSel);
+
+    // 使用 And 门将 in 和 notSel 结合，输出到 a
+    And (a=in, b=notSel, out=a);
+
+    // 使用 And 门将 in 和 sel 结合，输出到 b
+    And (a=in, b=sel, out=b);
+}
